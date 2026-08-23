@@ -14,9 +14,9 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Sync files to Google Drive
-        uses: jasonmichels/gdrive-upload-action@master
+        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.3.5
         with:
           credentials: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
-          folderId: ${{ secrets.GDRIVE_FOLDER_ID }}
-          name: ${{ github.event.repository.name }}
-          overwrite: true
+          parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
+          target: '*'
+          override: true
