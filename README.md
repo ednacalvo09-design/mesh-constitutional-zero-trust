@@ -1,22 +1,36 @@
-# Agent Mesh Core - MESH v5.0
-### Constitutional Multi-Agent Orchestration | Zero-Trust Execution | Immutable Event Memory | A2A Governance
+# mesh-constitutional-zero-trust
 
-![Release: v5.0](https://img.shields.io/badge/release-v5.0-blue) ![tests](https://img.shields.io/badge/tests-4%20passed-brightgreen) ![Python](https://img.shields.io/badge/Python-3.9.6-blue) ![License: MIT](https://img.shields.io/badge/License-MIT-yellow)
+> **Constitutional Multi-Agent Orchestration | Zero-Trust Execution | Immutable Event Memory | A2A Governance**
 
-> **MESH v5.0 is a constitutional framework for governing, orchestrating and validating autonomous AI agents.** It operates under Harness Engineering paradigm - focusing on predictability, determinism, security and constitutional compliance instead of raw text generation.
+`mesh-constitutional-zero-trust` é uma arquitetura soberana desenvolvida para governar, orquestrar e validar agentes autônomos (A2A) com ênfase absoluta em previsibilidade, segurança e conformidade constitucional.
 
-**What is MESH v5.0?** An advanced core framework for orchestrating autonomous AI agents in distributed mesh architectures with Zero-Trust execution and immutable event memory.
+---
 
-## Quick Start - 2 Autonomous Agents Talking Alone (A2A)
+## What is MESH?
 
-```python
-from mesh_v5 import MasterAgent, Agent
+O **MESH** não é apenas mais um framework de agentes de IA. É uma malha distribuída onde agentes operam sob uma **Autoridade Constitucional** estrita. Nenhum agente, modelo ou proposta recebe confiança automática (*Zero-Trust*), garantindo que a execução técnica e a tomada de decisões permaneçam rigidamente alinhadas às regras de governança do sistema.
 
-# Your dream: IAs conversando entre si sem sua interlocução
-coordinator = MasterAgent(constitution="immutable_rules.yaml")
-agent1 = Agent(role="proposer", task="analyze_data")
-agent2 = Agent(role="executor", task="validate_and_execute")
+---
 
-# They talk alone via A2A protocol
-coordinator.orchestrate([agent1, agent2], zero_trust=True)
-print("Agents converged autonomously - 100% Zero-Trust PASSED")
+## Core Principles
+
+* **Constitutional Authority:** A lógica e as decisões dos agentes são subordinadas a uma Constituição imutável que define os limites operacionais e éticos.
+* **Zero-Trust Execution:** Nenhuma entidade ou componente do sistema possui privilégios implícitos. Toda interação, troca de mensagens ou proposta de código passa por validação rigorosa.
+* **Immutable Event Memory:** O histórico do sistema é gravado em um Event Store estruturado (append-only e hash-chained), permitindo auditoria completa e reconstrução de estado.
+* **Sovereign Runtime:** O código soberano e a infraestrutura local mantêm o controle final das operações, utilizando modelos externos estritamente como auditores ou proponentes, nunca como autoridades decisórias.
+
+---
+
+## Architecture
+
+A estrutura modular do projeto separa claramente os domínios de execução, governança e memória:
+
+```text
+mesh-constitutional-zero-trust/
+├── constitution/       # Regras e limites constitucionais da malha
+├── src/mesh/agents/    # Implementação dos agentes autônomos
+├── core/               # Núcleo de processamento e orquestração
+├── governance/         # Mecanismos de conformidade e auditoria
+├── guards/             # Barreiras de proteção e bloqueio
+├── event_store/        # Memória imutável e trilha de auditoria
+└── tests/              # Testes de validação e resiliência
