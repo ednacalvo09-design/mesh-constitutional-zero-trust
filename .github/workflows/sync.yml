@@ -52,20 +52,14 @@ jobs:
               for file in files:
                   file_path = os.path.join(root, file)
                   
-                  # Remove arquivos existentes com o mesmo nome na pasta para evitar conflito de ID
-                  query = f"'{folder_id}' in parents and name = '{file}' and trashed = false"
-                  existing_files = service.files().list(q=query, spaces='drive', fields='files(id, name)').execute().get('files', [])
-                  
-                  for existing in existing_files:
-                      service.files().delete(fileId=existing['id']).execute()
-
-                  # Cria o arquivo novo diretamente na pasta do Drive
                   file_metadata = {
                       'name': file,
                       'parents': [folder_id]
                   }
 
                   media = MediaFileUpload(file_path, resumable=True)
+                  
+                  # Apenas cria o arquivo diretamente, sem checagens complexas de ID
                   service.files().create(
                       body=file_metadata,
                       media_body=media,
