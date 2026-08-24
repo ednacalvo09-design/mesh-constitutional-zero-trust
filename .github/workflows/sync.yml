@@ -12,10 +12,74 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Upload to Google Drive
-        uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.3.5
+      - name: Set up Python
+        uses: actions/setup-python@v5
         with:
-          credentials: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
-          parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
-          target: '*'
-          override: true
+          python-version: '3.10'
+
+      - name: Install dependencies
+        run: |
+          pip install google-api-python-client google-auth
+
+      - name: Upload files to Google Drive
+        env:
+          GDRIVE_SERVICE_ACCOUNT_KEY: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
+          GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
+        run: |
+          python - <<'EOF'
+          import os
+          import json
+          from google.oauth2 import service_account
+          from googleapiclient.discovery import build
+          from googleapiclient.http import MediaFileUpload
+
+          # Carrega as credenciais da Service Account do segredo do GitHub
+          key_json = os.environ.get("GDRIVE_SERVICE_ACCOUNT_KEY")
+          folder_id = os.environ.get("GDRIVE_FOLDER_ID")
+
+          if not key_json or not folder_id:
+              raise ValueError("Credenciais ou ID da pasta do Google Drive não configurados.")
+
+          creds_dict = json.loads(key_json)
+          creds = service_account.Credentials.from_service_account_info(
+              creds_dict, scopes=['https://www.googleapis.com/auth/drive']
+          )
+
+          service = build('drive', 'v3', credentials=creds)
+
+          # Lista todos os arquivos da pasta atual do repositório (exceto a pasta .git)
+          for root, dirs, files in os.walk('.'):
+              if '.git' in root.split(os.sep):
+                  continue
+              for file in files:
+                  file_path = os.path.join(root, file)
+                  
+                  # Prepara os metadados do arquivo para o Google Drive
+                  file_metadata = {
+                      'name': file,
+                      'parents': [folder_id]
+                  }
+
+                  media = MediaFileUpload(file_path, resumable=True)
+
+                  # Verifica se o arquivo já existe na pasta do Drive para atualizar ou criar novo
+                  query = f"'{folder_id}' in parents and name = '{file}' and trashed = false"
+                  existing_files = service.files().list(q=query, spaces='drive', fields='files(id, name)').execute().get('files', [])
+
+                  if existing_files:
+                      file_id = existing_files[0]['id']
+                      updated_file = service.files().update(
+                          fileId=file_id,
+                          media_body=media
+                      ).execute()
+                      print(f"Atualizado com sucesso: {file}")
+                  else:
+                      created_file = service.files().create(
+                          body=file_metadata,
+                          media_body=media,
+                          fields='id'
+                      ).execute()
+                      print(f"Enviado com sucesso: {file}")
+
+          print("Sincronização concluída!")
+          EOF
