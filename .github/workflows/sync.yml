@@ -17,5 +17,5 @@ jobs:
         with:
           credentials: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
           parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
-          target: '.'
+          target: '*'
           override: true
