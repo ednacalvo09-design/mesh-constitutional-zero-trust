@@ -1,10 +1,9 @@
 name: Sync to Google Drive
 
 on:
-  push:
-    branches:
-      - main
   workflow_dispatch:
+  push:
+    branches: [ main ]
 
 jobs:
   sync:
@@ -13,10 +12,12 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Sync files to Google Drive
+      - name: Upload to Google Drive
         uses: Jumbo810/Upload_Github_Artifacts_TO_GDrive@v2.3.5
         with:
-          credentials: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
-          parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
-          target: '*'
-          override: true
+          args: |
+            parent_folder_id: ${{ secrets.GDRIVE_FOLDER_ID }}
+            client_email: ${{ fromJson(secrets.GDRIVE_SERVICE_ACCOUNT_KEY).client_email }}
+            private_key: ${{ fromJson(secrets.GDRIVE_SERVICE_ACCOUNT_KEY).private_key }}
+            target_folder: .
+            override: true
