@@ -57,9 +57,9 @@ jobs:
                       'parents': [folder_id]
                   }
 
-                  media = MediaFileUpload(file_path, resumable=True)
+                  # Desativa o upload resumível para evitar o erro de session ID 404
+                  media = MediaFileUpload(file_path, resumable=False)
                   
-                  # Apenas cria o arquivo diretamente, sem checagens complexas de ID
                   service.files().create(
                       body=file_metadata,
                       media_body=media,
