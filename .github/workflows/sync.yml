@@ -32,12 +32,13 @@ jobs:
           from google.oauth2 import service_account
           from googleapiclient.discovery import build
           from googleapiclient.http import MediaFileUpload
+          from googleapiclient.errors import HttpError
 
           key_json = os.environ.get("GDRIVE_SERVICE_ACCOUNT_KEY")
           folder_id = os.environ.get("GDRIVE_FOLDER_ID")
 
           if not key_json or not folder_id:
-              raise ValueError("Credenciais ou ID da pasta do Google Drive não configurados.")
+              raise ValueError("Google Drive credentials or Folder ID not configured.")
 
           creds_dict = json.loads(key_json)
           creds = service_account.Credentials.from_service_account_info(
@@ -46,9 +47,14 @@ jobs:
 
           service = build('drive', 'v3', credentials=creds)
 
+          ignored_dirs = {'.git', '.github', '__pycache__', 'venv', 'env'}
+
           for root, dirs, files in os.walk('.'):
-              if '.git' in root.split(os.sep):
+              # Skip ignored directories
+              dirs[:] = [d for d in dirs if d not in ignored_dirs]
+              if any(part in ignored_dirs for part in root.split(os.sep)):
                   continue
+
               for file in files:
                   file_path = os.path.join(root, file)
                   
@@ -57,15 +63,18 @@ jobs:
                       'parents': [folder_id]
                   }
 
-                  # Desativa o upload resumível para evitar o erro de session ID 404
-                  media = MediaFileUpload(file_path, resumable=False)
-                  
-                  service.files().create(
-                      body=file_metadata,
-                      media_body=media,
-                      fields='id'
-                  ).execute()
-                  print(f"Enviado com sucesso: {file}")
+                  try:
+                      media = MediaFileUpload(file_path, resumable=False)
+                      service.files().create(
+                          body=file_metadata,
+                          media_body=media,
+                          fields='id'
+                      ).execute()
+                      print(f"Successfully uploaded: {file_path}")
+                  except HttpError as error:
+                      print(f"An error occurred while uploading {file_path}: {error}")
+                  except Exception as e:
+                      print(f"Unexpected error with {file_path}: {e}")
 
-          print("Sincronização concluída com sucesso!")
+          print("Synchronization process completed!")
           EOF
