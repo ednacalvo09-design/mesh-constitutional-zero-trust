@@ -1,1 +1,0 @@
-from mesh.constitution.verifier import ConstitutionVerifier
