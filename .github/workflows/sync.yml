@@ -1,9 +1,9 @@
 name: Sync to Google Drive
 
 on:
-  workflow_dispatch:
   push:
     branches: [ main ]
+  workflow_dispatch:
 
 jobs:
   sync:
@@ -15,66 +15,16 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v5
         with:
-          python-version: '3.11'
+          python-version: '3.10'
 
       - name: Install dependencies
         run: |
-          pip install google-api-python-client google-auth
+          python -m pip install --upgrade pip
+          pip install google-api-python-client google-auth-oauthlib google-auth-httplib2
 
-      - name: Upload files to Google Drive
+      - name: Run Google Drive Sync Script
         env:
           GDRIVE_SERVICE_ACCOUNT_KEY: ${{ secrets.GDRIVE_SERVICE_ACCOUNT_KEY }}
           GDRIVE_FOLDER_ID: ${{ secrets.GDRIVE_FOLDER_ID }}
         run: |
-          python - <<'EOF'
-          import os
-          import json
-          from google.oauth2 import service_account
-          from googleapiclient.discovery import build
-          from googleapiclient.http import MediaFileUpload
-          from googleapiclient.errors import HttpError
-
-          key_json = os.environ.get("GDRIVE_SERVICE_ACCOUNT_KEY")
-          folder_id = os.environ.get("GDRIVE_FOLDER_ID")
-
-          if not key_json or not folder_id:
-              raise ValueError("Google Drive credentials or Folder ID not configured.")
-
-          creds_dict = json.loads(key_json)
-          creds = service_account.Credentials.from_service_account_info(
-              creds_dict, scopes=['https://www.googleapis.com/auth/drive']
-          )
-
-          service = build('drive', 'v3', credentials=creds)
-
-          ignored_dirs = {'.git', '.github', '__pycache__', 'venv', 'env'}
-
-          for root, dirs, files in os.walk('.'):
-              # Skip ignored directories
-              dirs[:] = [d for d in dirs if d not in ignored_dirs]
-              if any(part in ignored_dirs for part in root.split(os.sep)):
-                  continue
-
-              for file in files:
-                  file_path = os.path.join(root, file)
-                  
-                  file_metadata = {
-                      'name': file,
-                      'parents': [folder_id]
-                  }
-
-                  try:
-                      media = MediaFileUpload(file_path, resumable=False)
-                      service.files().create(
-                          body=file_metadata,
-                          media_body=media,
-                          fields='id'
-                      ).execute()
-                      print(f"Successfully uploaded: {file_path}")
-                  except HttpError as error:
-                      print(f"An error occurred while uploading {file_path}: {error}")
-                  except Exception as e:
-                      print(f"Unexpected error with {file_path}: {e}")
-
-          print("Synchronization process completed!")
-          EOF
+          python3 src/runtime/scripts/sync_to_drive.py
