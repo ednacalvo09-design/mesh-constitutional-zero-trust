@@ -1,4 +1,0 @@
-class Constitution:
-    def __init__(self, version='v5.0'):
-        self.version=version
-        print(f'Constituicao {version} carregada') -c import pathlib; pathlib.Path('src/mesh/core/constitution/__init__.py').write_text('import pathlib, importlib.util\np=pathlib.Path(__file__).parent.parent / "constitution.py"\nspec=importlib.util.spec_from_file_location("c", p)\nm=importlib.util.module_from_spec(spec)\nspec.loader.exec_module(m)\nConstitution=m.Constitution\n')

@@ -14,25 +14,25 @@ from src.mesh.tests.unit.test_orchestrator import test_orchestrator
 
 
 def run_suite():
-    print("=" * 60)
-    print("   MESH v5.0 — BACTERIA GLOBAL DE TESTES DE ARQUITETURA   ")
-    print("=" * 60)
-    
-    print("\n[1/4] Executando Testes Constitucionais...")
-    test_constitution()
-    
-    print("\n[2/4] Executando Testes do Event Store...")
-    test_event_store()
-    
-    print("\n[3/4] Executando Testes de Governança (Proposal Gate)...")
-    test_governance_flow()
-    
-    print("\n[4/4] Executando Testes do Orquestrador Central...")
-    test_orchestrator()
-    
-    print("\n" + "=" * 60)
-    print("   🎉 TODOS OS TESTES FORAM APROVADOS COM SUCESSO! 🎉   ")
-    print("=" * 60)
+  print("=" * 60)
+  print("  MESH — BACTERIA GLOBAL DE TESTES DE ARQUITETURA  ")
+  print("=" * 60)
+  
+  print("\n[1/4] Executando Testes Constitucionais...")
+  test_constitution()
+  
+  print("\n[2/4] Executando Testes do Event Store...")
+  test_event_store()
+  
+  print("\n[3/4] Executando Testes de Governança (Proposal Gate)...")
+  test_governance_flow()
+  
+  print("\n[4/4] Executando Testes do Orquestrador Central...")
+  test_orchestrator()
+  
+  print("\n" + "=" * 60)
+  print("  🎉 TODOS OS TESTES FORAM APROVADOS COM SUCESSO! 🎉  ")
+  print("=" * 60)
 
 if __name__ == "__main__":
-    run_suite()
+  run_suite()
