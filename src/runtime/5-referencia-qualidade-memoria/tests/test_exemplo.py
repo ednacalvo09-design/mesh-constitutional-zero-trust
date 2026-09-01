@@ -16,7 +16,27 @@ def test_validacao_mesh():
     print("✅ test_validacao_mesh legado passou")
 
 def test_fluxo_completo():
+    try:
     from agents.proposer import ProposerAgent
+except ModuleNotFoundError:
+    try:
+        from src.runtime import proposer
+        from src.runtime.proposer import ProposerAgent
+    except ModuleNotFoundError:
+        # tenta pelo caminho real do projeto
+        import sys
+        from pathlib import Path
+        sys.path.insert(0, str(Path(__file__).parent.parent.parent.parent))
+        try:
+            from src.runtime.__init__ import ProposerAgent
+        except ImportError:
+            # último fallback - pega direto do arquivo que você já consertou
+            import importlib.util
+            proposer_path = Path(__file__).parent.parent.parent / "3-execucao-area-operacional" / "agents" / "proposer.py"
+            spec = importlib.util.spec_from_file_location("proposer", proposer_path)
+            mod = importlib.util.module_from_spec(spec)
+            spec.loader.exec_module(mod)
+            ProposerAgent = mod.ProposerAgent
     from governance.engine import GovernanceEngine
     from guards.guardian import Guardian
     from validation import ProposalValidator
