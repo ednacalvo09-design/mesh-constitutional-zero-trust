@@ -3,7 +3,20 @@ agents/proposer.py - Versão NOVA (substitui a defasada)
 Responsável por gerar propostas formais para o ecossistema.
 """
 
-from . import BaseAgent, Proposal, logger
+try:
+    from . import BaseAgent, Proposal, logger
+except ImportError:
+    try:
+        from .base import BaseAgent
+        from .proposal import Proposal
+    except ImportError:
+        BaseAgent = object
+        Proposal = dict
+    try:
+        from .logger import logger
+    except ImportError:
+        import logging
+        logger = logging.getLogger("agents.proposer")
 from typing import Any, Dict
 
 class ProposerAgent(BaseAgent):
