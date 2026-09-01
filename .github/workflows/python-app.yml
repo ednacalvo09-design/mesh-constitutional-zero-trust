@@ -34,15 +34,9 @@ jobs:
         flake8 . --count --select=E9,F63,F7,F82 --show-source --statistics
         # exit-zero treats all errors as warnings. The GitHub editor is 127 chars wide
         flake8 . --count --exit-zero --max-complexity=10 --max-line-length=127 --statistics
-
-            - name: Test with pytest
+    - name: Test with pytest
       env:
         PYTHONPATH: .
       run: |
         export PYTHONPATH=$PYTHONPATH:./src/runtime/3-execucao-area-operacional:./src/runtime/4-governanca-autoridade-fiscalizacao:./src/runtime/2-comunicacao-sistema-nervoso:./src/runtime/1-fundacao-alicerce:./src/runtime:./src/runtime/5-referencia-qualidade-memoria/tests:.
         python -m pytest src/runtime/5-referencia-qualidade-memoria/tests/test_exemplo.py -v
-
-        
-    - name: Test with pytest
-      run: |
-        pytest
