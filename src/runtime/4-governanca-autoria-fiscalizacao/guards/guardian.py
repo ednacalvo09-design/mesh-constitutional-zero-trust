@@ -15,7 +15,13 @@ except ImportError:
     Proposal = dict
     GovernanceEngine = None
 
-from . import GuardResult
+try:
+    from . import GuardResult
+except ImportError:
+    try:
+        from .guard_types import GuardResult
+    except ImportError:
+        GuardResult = dict
 import logging
 
 logger = logging.getLogger("guards.guardian")
