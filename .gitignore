@@ -7,3 +7,6 @@
 __pycache__/
 *.pyc
 .env
+
+# pasta de sincronização do Drive - não subir
+src/runtime/1-fundacao-alicerce/data/
