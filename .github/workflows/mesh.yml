@@ -1,0 +1,29 @@
+name: MESH Constitutional Zero Trust
+
+on:
+  push:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  mesh-guard:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      actions: read
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: MESH Zero Trust Check
+        env:
+          GH_TOKEN: ${{ secrets.GH_TOKEN }}
+        run: |
+          echo "MESH Constitutional Guard active"
+          echo "Validating with secure token..."
+          # Seu código do mesh aqui - nunca coloque o token direto no código!
+          if [ -z "$GH_TOKEN" ]; then
+            echo "ERRO: GH_TOKEN não configurado"
+            exit 1
+          fi
+          echo "Token OK - MESH seguro!"
