@@ -35,5 +35,4 @@ jobs:
         env:
           PYTHONPATH: .
         run: |
-          export PYTHONPATH=$PYTHONPATH:./src/runtime/3-execucao-area-operacional:./src/runtime/4-governanca-aut
-          python -m pytest src/runtime/5-referencia-qualidade-memoria/tests/test_exemplo.py -v
+         python -m pytest src/runtime/5-referencia-qualidade-memoria/tests/test_exemplo.py -v
