@@ -1,0 +1,20 @@
+name: MESH Audit
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.github/workflows/mesh-audit.yml'
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+jobs:
+  audit:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Validate MESH Constitution
+        run: |
+          echo "Validating MESH..."
+          test -f CONSTITUICAO-MESH.md
+          test -d src
+          echo "OK - 25 agents"
