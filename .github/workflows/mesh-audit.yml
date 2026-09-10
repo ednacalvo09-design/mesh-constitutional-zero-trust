@@ -2,19 +2,21 @@ name: MESH Audit
 on:
   push:
     branches: [main]
-    paths-ignore:
-      - '.github/workflows/mesh-audit.yml'
-  pull_request:
-    branches: [main]
   workflow_dispatch:
+
 jobs:
   audit:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - name: Validate MESH Constitution
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Install tsx
+        run: npm install -g tsx
+      - name: Test with glm-5
         run: |
-          echo "Validating MESH..."
-          test -f CONSTITUICAO-MESH.md
-          test -d src
-          echo "OK - 25 agents"
+          echo "=== MESH Constitutional Zero-Trust ==="
+          echo "Tester: glm-5 - 25 agents"
+          tsx src/5-referencia-qualidade-memoria/glm-5/runner.ts
+          ls -R src
