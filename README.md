@@ -1,3 +1,4 @@
+<img width="2048" height="1152" alt="mesh_network_cover" src="https://github.com/user-attachments/assets/d6d91fe1-2033-4795-acfb-d8979b151f64" />
 # mesh-constitutional-zero-trust
 **Constitution Authority - Constitutional Zero-Trust Multi-Agent System v1.0 (2026)**
 
