@@ -1,0 +1,19 @@
+spec_id: SPEC-002
+title: Post-Barrier Epistemic Synthesis and Compression Verification
+phase: Autonomous Research Phase - Synthesis
+target_nodes:
+  - synthesis_output_node
+upstream_dependencies:
+  - SPEC-001
+source_barriers:
+  - agent_4_academic
+  - agent_5_ethics
+invariants:
+  - no_direct_external_mutation: true
+  - mandatory_iepl_log: true
+  - antianthropomorphic_constraint: true
+  - proposer_external_isolation: true
+verification_criteria:
+  min_synthesis_coherence: 0.95
+  audit_hash_chain: required
+  require_signed_iepl_manifest: true
