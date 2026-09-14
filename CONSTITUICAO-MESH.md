@@ -1,6 +1,6 @@
 [gemini-code-1789359231405.md](https://github.com/user-attachments/files/32179046/gemini-code-1789359231405.md)
 # CONSTITUIÇÃO ARQUITETURAL DO MESH
-## Projeto: Constitutional Zero-Trust Multi-Agent System (Fase Pesquisa)
+## Projeto: Constitutional Zero-Trust Multi-Agent System (Autonomous Research Phase)
 **Repositório:** `mesh-constitutional-zero-trust` (Constitution Authority)
 **Proposer externo:** `glm-5` (fork zai-org/GLM-5) - fica FORA da pasta mestre
 
